@@ -1,0 +1,11 @@
+% Elwalid Aboulaakoul
+% Date : 07/12/2024
+clear all
+close all
+clc
+
+
+load('melody1.mat');
+
+[x, t] = create_melody(d_vect, note_vect, fs);
+sound(x, fs);
