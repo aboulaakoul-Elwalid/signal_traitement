@@ -3,7 +3,7 @@
 clear all
 close all
 clc
-function [x, t] = create_melody(d_vect, note_vect, fs)
+function [x, t] = create_melody(d_vect, note_vect, fe)
     x = [];
     t = [];
     for i = 1:length(note_vect)

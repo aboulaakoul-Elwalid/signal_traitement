@@ -9,7 +9,8 @@ d = 2;
 frequencies = [300, 600, 900, 1200];
 N = ceil(Fe * d);
 t = (0:N-1)' / Fe;
-
+fprintf('Les 10 premières valeurs du vecteur temp t[n] :\n');
+disp(t(1:10)); 
 fs = 8000;
 f0 = 800;
 d = 2;
@@ -54,8 +55,6 @@ pause(3);
 sound(xn_7200, fs);
 fprintf('les signaux de f0 = 800 hz et f0 = 7200 hz ont la même fréquence apparente en raison de l aliasing.\n');
 
-fprintf('Les 10 premières valeurs du vecteur temp t[n] :\n');
-disp(t(1:10)); 
 
 for f0 = frequencies
     x = sin(2 * pi * f0 * t); 

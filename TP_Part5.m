@@ -32,7 +32,7 @@ sound(x, Fs);
 X = fft(x);
 f = (0:length(X)-1) * Fs / length(X);
 
-fc = 72;
+fc = 71;
 HLP = double(abs(f) < fc);
 HHP = double(abs(f) > fc);
 
@@ -85,4 +85,3 @@ sound(real(y1_2), Fs);
 Y2_2 = X .* HHP2;
 y2_2 = ifft(Y2_2);
 sound(real(y2_2), Fs);
-C:\Users\walid\Desktop\ensa studies\S5\TS,TI\tp\create_note.m
