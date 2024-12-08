@@ -1,62 +1,93 @@
 % Elwalid Aboulaakoul
 % Date : 07/12/2024
-clear all
-close all
-clc
+clear;
+clc;
+close all;
+
+Fs = 8000; 
+t = 0:1/Fs:10; 
 
 
-Fs = 8000;   
-note1 = 69;  
-note2 = 49;  
-d1 = 1;      
-d2 = 1;      
+notes_x1 = [50, 55, 60, 65, 70];
+x1 = 0;
+for i = 1:length(notes_x1)
+    x1 = x1 + sin(2*pi*notes_x1(i)*t);
+end
+x1 = x1 / max(abs(x1)); 
+sound(x1, Fs);
 
 
-t1 = 0:1/Fs:d1-1/Fs;
-t2 = 0:1/Fs:d2-1/Fs; 
+notes_x2 = [72, 75, 80, 85, 90];
+x2 = 0;
+for i = 1:length(notes_x2)
+    x2 = x2 + sin(2*pi*notes_x2(i)*t);
+end
+x2 = x2 / max(abs(x2)); 
+sound(x2, Fs);
 
 
-signal1 = sin(2*pi*note1*t1);  
-signal2 = sin(2*pi*note2*t2);  
+x = x1 + x2;
+sound(x, Fs);
+
+[X, f] = my_FFT(x, Fs);
 
 
-signal = [signal1, signal2];
+fc = 71;
+HLP = double(abs(f) < fc);
+HHP = double(abs(f) > fc);
 
 
-[Y,f] = my_FFT(signal, Fs);
+Y1 = X .* HLP;
+y1 = my_FFTinv(Y1); 
+sound(y1, Fs);
+
+
+Y2 = X .* HHP;
+y2 = my_FFTinv(Y2); 
+sound(y2, Fs);
+
+
+distance_x1_y1 = norm(x1 - y1);
+distance_x2_y2 = norm(x2 - y2);
+fprintf('distance euclidienne entre x1 et y1: %.4f\n', distance_x1_y1);
+fprintf('distance euclidienne entre x2 et y2: %.4f\n', distance_x2_y2);
 
 
 figure;
-plot(f, abs(Y).^2);
-xlabel('Fréquence (Hz)');
-ylabel('Amplitude');
-title('Module au carré de la transformée de Fourier du signal');
+subplot(2, 2, 1);
+plot(f, abs(my_FFT(x1, Fs)));
+title('spectre de x1');
+xlabel('fréquence (Hz)');
+ylabel('amplitude');
+
+subplot(2, 2, 2);
+plot(f, abs(my_FFT(y1, Fs)));
+title('spectre de y1');
+xlabel('fréquence (Hz)');
+ylabel('amplitude');
+
+subplot(2, 2, 3);
+plot(f, abs(my_FFT(x2, Fs)));
+title('spectre de x2');
+xlabel('fréquence (Hz)');
+ylabel('amplitude');
+
+subplot(2, 2, 4);
+plot(f, abs(my_FFT(y2, Fs)));
+title('spectre de y2');
+xlabel('fréquence (Hz)');
+ylabel('amplitude');
 
 
-fc = (note1 + note2) / 2;  
+fc2 = 80;
+HLP2 = double(abs(f) < fc2);
+HHP2 = double(abs(f) > fc2);
+
+Y1_2 = X .* HLP2;
+y1_2 = my_FFTinv(Y1_2); 
+sound(y1_2, Fs);
 
 
-H_LP = double(abs(f) < fc);  
-H_HP = double(abs(f) > fc);  
-
-
-Y_LP = Y .* H_LP';   
-Y_HP = Y .* H_HP';   
-
-
-signal_LP = my_FFTinv(Y_LP, Fs);
-signal_HP = my_FFTinv(Y_HP, Fs);
-
-
-figure;
-subplot(2,1,1);
-plot((0:length(signal_LP)-1)/Fs, signal_LP);
-title('Signal filtré avec le filtre passe-bas');
-xlabel('Temps (s)');
-ylabel('Amplitude');
-
-subplot(2,1,2);
-plot((0:length(signal_HP)-1)/Fs, signal_HP);
-title('Signal filtré avec le filtre passe-haut');
-xlabel('Temps (s)');
-ylabel('Amplitude');
+Y2_2 = X .* HHP2;
+y2_2 = my_FFTinv(Y2_2); 
+sound(y2_2, Fs);
