@@ -48,6 +48,7 @@ Z1_varied = 0.5 + 0.5 * cos(2 * pi * (3 * X + 4 * Y));
 figure; imshow(Z1_varied, []); title('image z1 avec dx=0.3 et dy=0.3')
 
 disp('variation de dx et dy terminee')
+%En augmentant le pas Δ𝑥 et Δy, l'image devient plus "grossière" (effet d'aliasing), car moins de pixels sont utilisés
 
 
 
